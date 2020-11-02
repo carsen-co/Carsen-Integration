@@ -35,10 +35,6 @@ class CRAWLER:
                 break
                 # os._exit(0)
 
-    # turn list into tuples
-    def tuplify(self, data: list):
-        return [(d,) for d in data]
-
     # limit graph array size
     def limit_size(self, array: list, item) -> None:
         LIST_SIZE = 200
@@ -50,9 +46,9 @@ class CRAWLER:
     def database_updater(self, db) -> None:
         while self.running:
             time.sleep(60)
-            db.rewrite_table_values("active_links", self.tuplify(self.active_links))
-            db.rewrite_table_values("listings_links", self.tuplify(self.listings_links))
-            db.rewrite_table_values("processed_links", self.tuplify(self.processed_links))
+            db.rewrite_table_values("active_links", self.active_links)
+            db.rewrite_table_values("listings_links", self.listings_links)
+            db.rewrite_table_values("processed_links", self.processed_links)
 
     # return first listing
     def listing(self):
