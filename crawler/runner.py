@@ -1,4 +1,5 @@
-import os, time, threading
+import os, time
+from threading import Thread
 
 from crawler.mde_crawler import mde_crawler
 from crawler.visualizer import live_graph
@@ -12,28 +13,27 @@ class CRAWLER:
 
         # start the database updater thread
         self.running = True
-        db_thread = threading.Thread(target=self.database_updater, args=(db, ))
+        db_thread = Thread(target=self.database_updater, args=(db, ))
         db_thread.start()
 
         # start the live graph in a separate thread
-        graph_thread = threading.Thread(target=live_graph, args=(self, ))
+        graph_thread = Thread(target=live_graph, args=(self, ))
         graph_thread.start()
 
         # start mobile.de_crawler
-        mde_crawler_thread = threading.Thread(target=mde_crawler, args=(self, ))
+        mde_crawler_thread = Thread(target=mde_crawler, args=(self, ))
         mde_crawler_thread.start()
 
-        try:
-            while True:
-                stopper = input("Type S or STOP to interrupt the execution.\n")
-                if "s" in stopper.lower():
-                    raise KeyboardInterrupt
-        except KeyboardInterrupt:
-            print("Interruption detected, this might take up to 45 seconds.")
-            self.running = False
-            mde_crawler_thread.join()
-            db_thread.join()
-            os._exit(0)
+        while True:
+            if self.running:
+                pass
+            else:
+                print("Interruption detected, stopping crawler.")
+                mde_crawler_thread.join()
+                db_thread.join()
+                print("Safe exit")
+                break
+                # os._exit(0)
 
     # turn list into tuples
     def tuplify(self, data: list):
@@ -48,10 +48,16 @@ class CRAWLER:
 
     # database updater thread
     def database_updater(self, db) -> None:
-        while True:
+        while self.running:
             time.sleep(60)
             db.rewrite_table_values("active_links", self.tuplify(self.active_links))
             db.rewrite_table_values("listings_links", self.tuplify(self.listings_links))
             db.rewrite_table_values("processed_links", self.tuplify(self.processed_links))
-            if self.running == False:
-                break
+
+    # return first listing
+    def listing(self):
+        return self.listings_links[0]
+
+    # stop crawler execution
+    def stop(self):
+        self.running = False
