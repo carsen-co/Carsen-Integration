@@ -11,9 +11,14 @@ def process_listings_links(db, cr):
     while True:
         urls = cr.listings_links
         for url in urls:
-            car_data, db_name = scraper.get_car_data(url + "&lang=en", find_db=True)
-            db.add_value(db_name, car_data)
             cr.listings_links.remove(url)
+            cr.processed_links.append(url)
+            try:
+                car_data, db_name = scraper.get_car_data(url + "&lang=en", find_db=True)
+            except:
+                print("An error occured here -", url)
+                continue
+            db.add_value(db_name, car_data)
             if not cr.running:
                 break
         if not cr.running:
@@ -22,6 +27,7 @@ def process_listings_links(db, cr):
 
 
 if __name__ == "__main__":
+    print("Initiating, starting soon")
     database = DB()
     crawlr = CRAWLER(database)
 
@@ -35,7 +41,7 @@ if __name__ == "__main__":
     search_thread.start()
 
     try:
-        input("Type anything to stop execution: ")
+        input("Working, type anything to stop execution: ")
     except KeyboardInterrupt:
         pass
     finally:
@@ -46,4 +52,4 @@ if __name__ == "__main__":
         print("Search thread stopped")
         database.close_conn()
         print("Database closed")
-        os._exit(0)
+        # os._exit(0)

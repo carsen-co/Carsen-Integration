@@ -24,8 +24,8 @@ def table_name(title_data) -> str:
             + title_data[1].replace(" ", "-")
             + '"'
         )
-    elif "_" in title_data:
-        return '"' + title_data + '"'
+    else:
+        return '"' + title_data.replace(" ", "-") + '"'
 
 
 # turn list into tuples
@@ -151,9 +151,10 @@ def index_to_dbname(make_id, model_id):
     if not make_id == 0 or not make_id == "":
         for make in _MDE_MAKES_DICT:
             if make["i"] == make_id:
-                database += str(make["n"]).replace(" ", "-") + "_"
+                database += str(make["n"]).replace(" ", "-")
                 if not model_id == 0 or not model_id == "":
                     for model in make["models"]:
                         if model["v"] == model_id:
-                            database += str(model["m"]).replace(" ", "-")
-                            return table_name(database)
+                            database += "_" + str(model["m"]).replace(" ", "-")
+
+    return table_name(database)

@@ -172,7 +172,10 @@ def get_car_data(url: str, find_db=False) -> list:
     location = soup.find(id="rbt-seller-address").get_text().replace("\xa0", " ")
 
     # fuel type
-    fuel_type = soup.find(id="rbt-fuel-v").get_text()
+    try:
+        fuel_type = soup.find(id="rbt-fuel-v").get_text()
+    except AttributeError:
+        fuel_type = ""
 
     # transmission
     try:

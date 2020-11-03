@@ -24,6 +24,7 @@ class DB:
 
         for item in _MDE_MAKES_DICT:
             name = item["n"]
+            self.create_table(table_name(name), CAR_TABLE_DATA)
             for model in item["models"]:
                 mod = model["m"]
                 self.create_table(table_name([name, mod]), CAR_TABLE_DATA)
