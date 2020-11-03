@@ -175,7 +175,10 @@ def get_car_data(url: str, find_db=False) -> list:
     fuel_type = soup.find(id="rbt-fuel-v").get_text()
 
     # transmission
-    transmission = soup.find(id="rbt-transmission-v").get_text().split(" ")[0]
+    try:
+        transmission = soup.find(id="rbt-transmission-v").get_text().split(" ")[0]
+    except AttributeError:
+        transmission = ""
 
     # car color
     try:
