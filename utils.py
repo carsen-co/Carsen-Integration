@@ -27,9 +27,11 @@ def table_name(title_data) -> str:
     elif "_" in title_data:
         return '"' + title_data + '"'
 
+
 # turn list into tuples
 def tuplify(data: list) -> list:
     return [(d,) for d in data]
+
 
 # match make and model for corresponding ids and db table
 def make_model_matcher(car_make: str, car_model: str) -> list:

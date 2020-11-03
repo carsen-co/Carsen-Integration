@@ -4,36 +4,28 @@ from threading import Thread
 from crawler.mde_crawler import mde_crawler
 from crawler.visualizer import live_graph
 
+
 class CRAWLER:
-    def __init__(self, db):
+    def __init__(self, db, graph=False):
+        self.running = True
+
         # initialize arrays
         self.active_links = db.read_table("active_links")
         self.listings_links = db.read_table("listings_links")
         self.processed_links = db.read_table("processed_links")
 
         # start the database updater thread
-        self.running = True
-        db_thread = Thread(target=self.database_updater, args=(db, ))
-        db_thread.start()
+        self.db_thread = Thread(target=self.database_updater, args=(db,))
+        self.db_thread.start()
 
-        # start the live graph in a separate thread
-        graph_thread = Thread(target=live_graph, args=(self, ))
-        graph_thread.start()
+        if graph:
+            # start the live graph in a separate thread
+            graph_thread = Thread(target=live_graph, args=(self,))
+            graph_thread.start()
 
         # start mobile.de_crawler
-        mde_crawler_thread = Thread(target=mde_crawler, args=(self, ))
-        mde_crawler_thread.start()
-
-        while True:
-            if self.running:
-                pass
-            else:
-                print("Interruption detected, stopping crawler.")
-                mde_crawler_thread.join()
-                db_thread.join()
-                print("Safe exit")
-                break
-                # os._exit(0)
+        self.mde_crawler_thread = Thread(target=mde_crawler, args=(self,))
+        self.mde_crawler_thread.start()
 
     # limit graph array size
     def limit_size(self, array: list, item) -> None:
@@ -57,3 +49,6 @@ class CRAWLER:
     # stop crawler execution
     def stop(self):
         self.running = False
+        self.mde_crawler_thread.join()
+        self.db_thread.join()
+        # os._exit(0)
