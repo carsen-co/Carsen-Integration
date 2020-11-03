@@ -27,6 +27,9 @@ def table_name(title_data) -> str:
     elif "_" in title_data:
         return '"' + title_data + '"'
 
+# turn list into tuples
+def tuplify(data: list) -> list:
+    return [(d,) for d in data]
 
 # match make and model for corresponding ids and db table
 def make_model_matcher(car_make: str, car_model: str) -> list:
@@ -124,7 +127,7 @@ def index_db_finder_js(url: str) -> str:
         if "setAdData({" in contents:
             make_id = ""
             make_id_text = "adSpecificsMakeId"
-            for ch in contents[contents.find(make_id_text)+len(make_id_text)+2:]:
+            for ch in contents[contents.find(make_id_text) + len(make_id_text) + 2 :]:
                 if not ch == ",":
                     make_id += ch
                 else:
@@ -132,7 +135,7 @@ def index_db_finder_js(url: str) -> str:
 
             model_id = ""
             model_id_text = "adSpecificsModelId"
-            for ch in contents[contents.find(model_id_text)+len(model_id_text)+2:]:
+            for ch in contents[contents.find(model_id_text) + len(model_id_text) + 2 :]:
                 if not ch == ",":
                     model_id += ch
                 else:
