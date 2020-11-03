@@ -29,7 +29,7 @@ CAR_TABLE_DATA = [
     ("transmission", "TEXT"),
     # ("color", "TEXT"),
     ("options", "TEXT"),
-    ("score", "REAL"),
+    # ("score", "REAL"),
 ]
 
 # crawler settings
