@@ -6,14 +6,13 @@ from crawler.visualizer import live_graph
 
 
 class CRAWLER:
-    def __init__(self, database, graph=False):
-        self.db = database
+    def __init__(self, db, graph=False):
         self.running = True
 
         # initialize arrays
-        self.active_links = self.db.read_table("active_links")
-        self.listings_links = self.db.read_table("listings_links")
-        self.processed_links = self.db.read_table("processed_links")
+        self.active_links = db.read_table("active_links")
+        self.listings_links = db.read_table("listings_links")
+        self.processed_links = db.read_table("processed_links")
 
         # start the live graph in a separate thread
         if graph:
@@ -32,17 +31,17 @@ class CRAWLER:
             array.pop(0)
 
     # database updater thread
-    def db_sync_links(self) -> None:
-        self.db.rewrite_table_values("active_links", self.active_links)
-        self.db.rewrite_table_values("listings_links", self.listings_links)
-        self.db.rewrite_table_values("processed_links", self.processed_links)
+    def db_sync_links(self, db) -> None:
+        db.rewrite_table_values("active_links", self.active_links)
+        db.rewrite_table_values("listings_links", self.listings_links)
+        db.rewrite_table_values("processed_links", self.processed_links)
 
     # return first listing
     def listing(self):
         return self.listings_links[0]
 
     # stop crawler execution
-    def stop(self):
+    def stop(self, db):
         self.running = False
-        self.db_sync_links()
+        self.db_sync_links(db)
         self.mde_crawler_thread.join()
