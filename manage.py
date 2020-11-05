@@ -1,7 +1,7 @@
 import os, sqlite3, threading
 from time import sleep
 
-from db import DB
+from database import DB
 from crawler import CRAWLER
 from mobile_de import scraper
 from settings import DB_NAME
@@ -37,7 +37,7 @@ def status(cr):
             f'Database size: {os.stat(DB_NAME).st_size / (1024**2):.2f}MB',
             sep="\n"
         )
-        sleep(5)
+        sleep(1)
         if cr.running == False:
             break
 
