@@ -1,4 +1,5 @@
 import time, sqlite3
+from waiting import wait
 from queue import Queue
 from threading import Thread
 
@@ -42,10 +43,10 @@ class DB:
                 #   item[1] - values
                 if type(item) == list:
                     self.cur.executemany(item[0], item[1])
-                    print(item[0])
+                    #print(item[0])
                 else:
                     self.cur.execute(item)
-                    print(item)
+                    #print(item)
                 self.conn.commit()
             elif self.Q.empty() and not self.running:
                 break
@@ -86,7 +87,7 @@ class DB:
         if len(values) == 0:
             return
         del_query = "delete from %s" % table
-        self.cur.execute(del_query)
+        self.Q.put(del_query)
         values = tuplify(values)
         qlen = ""
         for i, v in enumerate(values[0]):
