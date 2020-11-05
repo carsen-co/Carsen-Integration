@@ -43,10 +43,10 @@ class DB:
                 #   item[1] - values
                 if type(item) == list:
                     self.cur.executemany(item[0], item[1])
-                    #print(item[0])
+                    # print(item[0])
                 else:
                     self.cur.execute(item)
-                    #print(item)
+                    # print(item)
                 self.conn.commit()
             elif self.Q.empty() and not self.running:
                 break

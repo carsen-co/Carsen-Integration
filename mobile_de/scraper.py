@@ -137,9 +137,9 @@ def get_data(url: str, find_db=False) -> list:
     if url.find("scopeId=C") != -1:
         data = get_car_data(url)
     elif url.find("scopeId=MB") != -1:
-        return #motorbike
+        return  # motorbike
     elif url.find("scopeId=MH") != -1:
-        return #motor home and caravan
+        return  # motor home and caravan
     else:
         return
 
