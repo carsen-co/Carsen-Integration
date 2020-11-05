@@ -15,9 +15,12 @@ def process_listings_links(db, cr):
             cr.listings_links.remove(url)
             cr.processed_links.append(url)
             try:
-                car_data, db_name = scraper.get_car_data(url + "&lang=en", find_db=True)
+                try:
+                    car_data, db_name = scraper.get_data(url, find_db=True)
+                except TypeError:
+                    # data is None
+                    continue
             except Exception as e:
-                # print("An error occured -", e, "-", url)
                 continue
             db.add_value(db_name, car_data)
             if not cr.running:
