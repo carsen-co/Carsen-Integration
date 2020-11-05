@@ -30,7 +30,7 @@ def process_listings_links(db, cr):
         sleep(5)
 
 
-def status(cr):
+def status(cr, db):
     print("\n" * 5, end="")
     while True:
         print("\033[F" * 6)
@@ -39,7 +39,8 @@ def status(cr):
             f"       Active: {len(cr.active_links)}",
             f"     Listings: {len(cr.listings_links)}",
             f"    Processed: {len(cr.processed_links)}",
-            f"Database size: {os.stat(DB_NAME).st_size / (1024**2):.2f}MB",
+            f"Database size: {os.stat(DB_NAME).st_size / (1024**2):.3f}MB",
+            # f"      Indexed: {db.read_all()}",
             sep="\n",
         )
         sleep(1)
@@ -62,7 +63,7 @@ if __name__ == "__main__":
 
     status_thread = threading.Thread(
         target=status,
-        args=(crawlr,),
+        args=(crawlr, database),
     )
     status_thread.start()
 
