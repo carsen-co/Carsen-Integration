@@ -132,6 +132,28 @@ def get_page_listings(url: str) -> list:
     ]
 
 
+def get_data(url: str, find_db=False) -> list:
+    # check type of vehicle
+    if url.find("scopeId=C") != -1:
+        data = get_car_data(url)
+    elif url.find("scopeId=MB") != -1:
+        return #motorbike
+    elif url.find("scopeId=MH") != -1:
+        return #motor home and caravan
+    else:
+        return
+
+    if find_db:
+        try:
+            database = index_db_finder(url)
+        except IndexError:
+            database = index_db_finder_js(url)
+        finally:
+            return data, database
+    else:
+        return data
+
+
 def get_car_data(url: str, find_db=False) -> list:
     response = get(url, headers=HEADERS)
     soup = BeautifulSoup(response.content, "html.parser")
@@ -212,16 +234,6 @@ def get_car_data(url: str, find_db=False) -> list:
         # color,
         "|".join(options),
     ]
-
-    if find_db:
-        try:
-            database = index_db_finder(url)
-        except IndexError:
-            database = index_db_finder_js(url)
-        finally:
-            return data, database
-    else:
-        return data
 
 
 def check_car_price(url: str) -> int:
