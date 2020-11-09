@@ -2,7 +2,7 @@ from datetime import datetime
 from requests import get
 from bs4 import BeautifulSoup
 
-from utils import make_model_matcher, index_db_finder, index_db_finder_js
+from scrapers.sc_utils import make_model_matcher, index_db_finder, index_db_finder_js
 from settings import (
     HEADERS,
     BASE_URL,

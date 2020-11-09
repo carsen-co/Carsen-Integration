@@ -1,6 +1,6 @@
 import scalg
 
-from mobile_de.scraper import *
+from scrapers.mobile_de.scraper import *
 
 # perform a detailed search of each listing
 def search(search_params: list, db=False) -> list:
