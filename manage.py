@@ -3,7 +3,7 @@ from time import sleep
 
 from database import DB
 from crawler import CRAWLER
-from mobile_de import scraper
+from scrapers.mobile_de import scraper
 from settings import DB_NAME
 
 
