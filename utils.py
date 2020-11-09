@@ -14,24 +14,6 @@ def load_makes(website: str, _MAKES_JSON: str) -> dict:
 from difflib import SequenceMatcher
 from settings import _MDE_MAKES_DICT, MATCH_RATIO, HEADERS
 
-# generate db table name
-def table_name(title_data) -> str:
-    if type(title_data) == list:
-        return (
-            '"'
-            + title_data[0].replace(" ", "-")
-            + "_"
-            + title_data[1].replace(" ", "-")
-            + '"'
-        )
-    else:
-        return '"' + title_data.replace(" ", "-") + '"'
-
-
-# turn list into tuples
-def tuplify(data: list) -> list:
-    return [(d,) for d in data]
-
 
 # match make and model for corresponding ids and db table
 def make_model_matcher(car_make: str, car_model: str) -> list:

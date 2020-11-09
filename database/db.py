@@ -3,7 +3,7 @@ from queue import Queue
 from threading import Thread
 
 
-from utils import table_name, tuplify
+from database.db_utils import table_name, tuplify
 from settings import CRAWLER_TABLES, _MDE_MAKES_DICT, DB_NAME, CAR_TABLE_DATA
 
 
