@@ -9,7 +9,7 @@ from settings import DB_NAME
 
 def process_listings_links(db, cr):
     sleep(5)
-    while True:
+    while cr.running:
         urls = cr.listings_links
         for url in urls:
             cr.listings_links.remove(url)
@@ -23,10 +23,6 @@ def process_listings_links(db, cr):
             except Exception as e:
                 continue
             db.add_value(db_name, car_data)
-            if not cr.running:
-                break
-        if not cr.running:
-            break
         sleep(5)
 
 
